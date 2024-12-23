@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { useAuthClient } from '@/hooks/useAuthClient'
 import { api_endpoint } from '@/lib/utils'
-import { LogOut, Settings, User } from 'lucide-react'
+import { LogOut, Settings } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
@@ -48,34 +48,28 @@ export function UserProfile() {
     <DropdownMenu>
       <DropdownMenuTrigger
         asChild
-        className='w-[2.25rem] h-[2.25rem] cursor-pointer'
+        className="h-[2.25rem] w-[2.25rem] cursor-pointer"
       >
         <Avatar>
-          <AvatarImage src={''} alt='User Profile' />
-          <AvatarFallback className='uppercase font-bold'>
+          <AvatarImage src={''} alt="User Profile" />
+          <AvatarFallback className="font-bold uppercase">
             {twoInitials}
           </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className='w-56'>
+      <DropdownMenuContent className="w-56">
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <Link href='/user-profile'>
-            <DropdownMenuItem className='cursor-pointer'>
-              <User className='mr-2 h-4 w-4' />
-              <span>Profile</span>
-            </DropdownMenuItem>
-          </Link>
-          <Link href='/dashboard/settings'>
-            <DropdownMenuItem className='cursor-pointer'>
-              <Settings className='mr-2 h-4 w-4' />
+          <Link href="/dashboard/settings">
+            <DropdownMenuItem className="cursor-pointer">
+              <Settings className="mr-2 h-4 w-4" />
               <span>Settings</span>
             </DropdownMenuItem>
           </Link>
         </DropdownMenuGroup>
-        <DropdownMenuItem className='cursor-pointer' onClick={handleLogout}>
-          <LogOut className='mr-2 h-4 w-4' />
+        <DropdownMenuItem className="cursor-pointer" onClick={handleLogout}>
+          <LogOut className="mr-2 h-4 w-4" />
           <span>Log out</span>
         </DropdownMenuItem>
       </DropdownMenuContent>

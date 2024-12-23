@@ -27,6 +27,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
+import { CreateEventType } from '@/types/event'
 
 const formSchema = z.object({
   title: z.string().min(2, {
@@ -63,13 +64,7 @@ export default function EventForm() {
     startDate,
     endDate,
     location,
-  }: {
-    title: string
-    description: string
-    startDate: Date
-    endDate: Date
-    location: string
-  }) {
+  }: CreateEventType) {
     fetch(`${api_endpoint}/api/v1/event/create`, {
       method: 'POST',
       credentials: 'include',
@@ -99,27 +94,20 @@ export default function EventForm() {
   }
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values.startDate)
-    handleCreateEvent({
-      title: values.title,
-      description: values.description,
-      startDate: values.startDate,
-      endDate: values.endDate,
-      location: values.location,
-    })
+    handleCreateEvent(values)
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
-          name='title'
+          name="title"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Event Title</FormLabel>
               <FormControl>
-                <Input placeholder='Enter event title' {...field} />
+                <Input placeholder="Enter event title" {...field} />
               </FormControl>
               <FormDescription>
                 Choose a catchy title for your event.
@@ -130,14 +118,14 @@ export default function EventForm() {
         />
         <FormField
           control={form.control}
-          name='description'
+          name="description"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Event Description</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder='Enter event description'
-                  className='resize-none'
+                  placeholder="Enter event description"
+                  className="resize-none"
                   {...field}
                 />
               </FormControl>
@@ -148,12 +136,12 @@ export default function EventForm() {
             </FormItem>
           )}
         />
-        <div className='flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0'>
+        <div className="flex flex-col space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
           <FormField
             control={form.control}
-            name='startDate'
+            name="startDate"
             render={({ field }) => (
-              <FormItem className='flex flex-col flex-1'>
+              <FormItem className="flex flex-1 flex-col">
                 <FormLabel>Start Date</FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
@@ -162,7 +150,7 @@ export default function EventForm() {
                         variant={'outline'}
                         className={cn(
                           'w-full pl-3 text-left font-normal',
-                          !field.value && 'text-muted-foreground',
+                          !field.value && 'text-muted-foreground'
                         )}
                       >
                         {field.value ? (
@@ -170,13 +158,13 @@ export default function EventForm() {
                         ) : (
                           <span>Pick a date</span>
                         )}
-                        <CalendarIcon className='ml-auto h-4 w-4 opacity-50' />
+                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                       </Button>
                     </FormControl>
                   </PopoverTrigger>
-                  <PopoverContent className='w-auto p-0' align='start'>
+                  <PopoverContent className="w-auto p-0" align="start">
                     <Calendar
-                      mode='single'
+                      mode="single"
                       selected={field.value}
                       onSelect={field.onChange}
                       disabled={(date) =>
@@ -193,9 +181,9 @@ export default function EventForm() {
           />
           <FormField
             control={form.control}
-            name='endDate'
+            name="endDate"
             render={({ field }) => (
-              <FormItem className='flex flex-col flex-1'>
+              <FormItem className="flex flex-1 flex-col">
                 <FormLabel>End Date</FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
@@ -204,7 +192,7 @@ export default function EventForm() {
                         variant={'outline'}
                         className={cn(
                           'w-full pl-3 text-left font-normal',
-                          !field.value && 'text-muted-foreground',
+                          !field.value && 'text-muted-foreground'
                         )}
                       >
                         {field.value ? (
@@ -212,13 +200,13 @@ export default function EventForm() {
                         ) : (
                           <span>Pick a date</span>
                         )}
-                        <CalendarIcon className='ml-auto h-4 w-4 opacity-50' />
+                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                       </Button>
                     </FormControl>
                   </PopoverTrigger>
-                  <PopoverContent className='w-auto p-0' align='start'>
+                  <PopoverContent className="w-auto p-0" align="start">
                     <Calendar
-                      mode='single'
+                      mode="single"
                       selected={field.value}
                       onSelect={field.onChange}
                       disabled={(date) =>
@@ -236,16 +224,16 @@ export default function EventForm() {
         </div>
         <FormField
           control={form.control}
-          name='location'
+          name="location"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Event Location</FormLabel>
               <FormControl>
-                <div className='relative'>
-                  <MapPinIcon className='absolute left-2 top-2.5 h-5 w-5 text-muted-foreground' />
+                <div className="relative">
+                  <MapPinIcon className="text-muted-foreground absolute left-2 top-2.5 h-5 w-5" />
                   <Input
-                    placeholder='Enter event location'
-                    className='pl-9'
+                    placeholder="Enter event location"
+                    className="pl-9"
                     {...field}
                   />
                 </div>
@@ -257,7 +245,7 @@ export default function EventForm() {
             </FormItem>
           )}
         />
-        <Button type='submit' className='w-full'>
+        <Button type="submit" className="w-full">
           Create Event
         </Button>
       </form>

@@ -1,14 +1,14 @@
+import useAuthServer from '@/hooks/useAuthServer'
 import { api_endpoint } from '@/lib/utils'
 import { EventType } from '@/types/event'
-import { cookies } from 'next/headers'
 
 export default async function EventDetailPage({
   params,
 }: {
   params: { id: string }
 }) {
-  const cookieStore = cookies()
-  const token = cookieStore.get('token')?.value || ''
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const { token } = await useAuthServer()
 
   const res = await fetch(`${api_endpoint}/api/v1/event/${params.id}`, {
     method: 'GET',

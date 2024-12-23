@@ -15,30 +15,24 @@ import {
   SidebarMenuItem,
 } from '@/components/ui/sidebar'
 import { cn } from '@/lib/utils'
-import { BarChart2, ChevronRight, Folder, Home, Settings } from 'lucide-react'
+import { ChevronRight } from 'lucide-react'
+import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { ReactNode } from 'react'
 
-const menuItems = [
-  { icon: Home, label: 'Overview', href: '/dashboard', isActive: false },
-  {
-    icon: BarChart2,
-    label: 'Analytics',
-    submenu: [
-      { label: 'Overview', href: '/', isActive: false },
-      { label: 'Reports', href: '/', isActive: false },
-      { label: 'Real-time', href: '/', isActive: false },
-    ],
-  },
-  { icon: Folder, label: 'Events', href: '/dashboard/events', isActive: false },
-  {
-    icon: Settings,
-    label: 'Settings',
-    href: '/dashboard/settings',
-    isActive: false,
-  },
-]
+type MenuItemsProps = {
+  icon?: ReactNode
+  label: string
+  href?: string
+  isActive?: boolean
+  submenu?: MenuItemsProps[]
+}
 
-export default function DashboardSidebar() {
+export default function DashboardSidebar({
+  menuItems,
+}: {
+  menuItems: MenuItemsProps[]
+}) {
   const pathname = usePathname()
 
   return (
@@ -55,7 +49,7 @@ export default function DashboardSidebar() {
                   <CollapsibleTrigger asChild>
                     <SidebarMenuButton className="w-full justify-between">
                       <span className="flex items-center gap-3">
-                        <item.icon className="h-5 w-5" />
+                        {item.icon}
                         <span>{item.label}</span>
                       </span>
                       <ChevronRight className="h-4 w-4 transition-transform duration-200" />
@@ -66,8 +60,8 @@ export default function DashboardSidebar() {
                       {item.submenu.map((subItem, subIndex) => (
                         <SidebarMenuItem key={subIndex}>
                           <SidebarMenuButton asChild className="w-full">
-                            <a
-                              href={subItem.href}
+                            <Link
+                              href={subItem.href || '/'}
                               className={cn(
                                 'flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50',
                                 {
@@ -76,8 +70,9 @@ export default function DashboardSidebar() {
                                 }
                               )}
                             >
-                              {subItem.label}
-                            </a>
+                              {subItem.icon}
+                              <span>{subItem.label}</span>
+                            </Link>
                           </SidebarMenuButton>
                         </SidebarMenuItem>
                       ))}
@@ -86,8 +81,8 @@ export default function DashboardSidebar() {
                 </Collapsible>
               ) : (
                 <SidebarMenuButton asChild className="w-full">
-                  <a
-                    href={item.href}
+                  <Link
+                    href={item.href || '/'}
                     className={cn(
                       'flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50',
                       {
@@ -96,9 +91,9 @@ export default function DashboardSidebar() {
                       }
                     )}
                   >
-                    <item.icon className="h-5 w-5" />
+                    {item.icon}
                     <span>{item.label}</span>
-                  </a>
+                  </Link>
                 </SidebarMenuButton>
               )}
             </SidebarMenuItem>

@@ -13,8 +13,6 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
-import { useAtom } from 'jotai/react'
-import { currentEventIDAtom } from '@/lib/store'
 
 interface EventCardProps {
   id: number
@@ -35,7 +33,6 @@ export function EventCard({
   location,
   className,
 }: EventCardProps) {
-  const [, setCurrentEventID] = useAtom(currentEventIDAtom)
   return (
     <Card className={cn('w-full max-w-md', className)}>
       <CardHeader>
@@ -69,9 +66,7 @@ export function EventCard({
       </CardContent>
       <CardFooter>
         <Link href={`/event/${id}`}>
-          <Button onClick={() => setCurrentEventID(id)} className="w-full">
-            Mange Event
-          </Button>
+          <Button className="w-full">Mange Event</Button>
         </Link>
       </CardFooter>
     </Card>

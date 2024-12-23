@@ -1,9 +1,9 @@
 import { SidebarProvider } from '@/components/ui/sidebar'
 import type { Metadata } from 'next'
-import DashboardHeader, {
-  BreadCrumb,
-} from './(components)/Dashboard/DashboardHeader'
+import DashboardHeader from './(components)/Dashboard/DashboardHeader'
 import DashboardSidebar from './(components)/Dashboard/DashboardSideBar'
+import { BarChart2, Folder, Home, Settings } from 'lucide-react'
+import BreadCrumb from './(components)/Dashboard/BreadCrumb'
 
 export const metadata: Metadata = {
   title: 'Admin',
@@ -15,10 +15,55 @@ export default async function AdminLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const menuItems = [
+    {
+      icon: <Home className="h-5 w-5" />,
+      label: 'Overview',
+      href: '/dashboard',
+      isActive: false,
+    },
+    {
+      icon: <BarChart2 className="h-5 w-5" />,
+      label: 'Analytics',
+      submenu: [
+        {
+          icon: <BarChart2 className="h-5 w-5" />,
+          label: 'Overview',
+          href: '/',
+          isActive: false,
+        },
+        {
+          icon: <BarChart2 className="h-5 w-5" />,
+          label: 'Reports',
+          href: '/',
+          isActive: false,
+        },
+        {
+          icon: <BarChart2 className="h-5 w-5" />,
+          label: 'Real-time',
+          href: '/',
+          isActive: false,
+        },
+      ],
+    },
+    {
+      icon: <Folder className="h-5 w-5" />,
+      label: 'Events',
+      href: '/dashboard/events',
+      isActive: false,
+    },
+    {
+      icon: <Settings className="h-5 w-5" />,
+      label: 'Settings',
+      href: '/dashboard/settings',
+      isActive: false,
+    },
+  ]
+
   return (
     <SidebarProvider>
       <div className="flex h-screen w-full overflow-hidden">
-        <DashboardSidebar />
+        <DashboardSidebar menuItems={menuItems} />
         <div className="flex w-full flex-1 flex-col overflow-hidden">
           <DashboardHeader />
           <main className="bg-secondary/10 w-full flex-1 overflow-y-auto p-6">
