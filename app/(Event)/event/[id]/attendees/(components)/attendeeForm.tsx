@@ -48,9 +48,9 @@ export const attendeeFormSchema = z.object({
 type AttendeeFormValues = z.infer<typeof attendeeFormSchema>
 
 export function AttendeeCreateForm({
-  refetchAttendee,
+  refetchAttendees,
 }: {
-  refetchAttendee: () => void
+  refetchAttendees: () => void
 }) {
   const [open, setOpen] = useState(false)
 
@@ -106,7 +106,7 @@ export function AttendeeCreateForm({
         }
 
         toast.success('Attendee created.')
-        refetchAttendee()
+        refetchAttendees()
       })
       .catch((err) => {
         toast.error(err.message)
@@ -114,7 +114,6 @@ export function AttendeeCreateForm({
   }
 
   function onSubmit(data: AttendeeFormValues) {
-    // Here you would typically send the data to your backend
     handleCreateAttendee(data)
     setOpen(false)
   }

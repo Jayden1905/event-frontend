@@ -8,7 +8,7 @@ import { AttendeeTable } from './(components)/attendeeTable'
 
 const fetchAttendees = async (eventID: string) => {
   const response = await fetch(
-    `${api_endpoint}/api/v1/event/${eventID}/attendees`,
+    `${api_endpoint}/api/v1/event/${eventID}/all_attendees`,
     {
       method: 'GET',
       credentials: 'include',
@@ -18,6 +18,7 @@ const fetchAttendees = async (eventID: string) => {
     const errorData = await response.json()
     throw new Error(errorData.error || 'Failed to fetch attendees')
   }
+
   return response.json() as Promise<AttendeeType[]>
 }
 
@@ -29,10 +30,11 @@ export default function AttendeePage() {
     queryKey: ['attendees'],
     queryFn: () => fetchAttendees(currentEventID),
   })
+  console.log(data)
 
   return (
     <div>
-      <AttendeeTable attendees={data} refetchAttendee={refetch} />
+      <AttendeeTable attendees={data} refetchAttendees={refetch} />
     </div>
   )
 }

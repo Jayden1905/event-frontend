@@ -37,5 +37,5 @@ export async function middleware(req: NextRequest) {
 
 // Apply middleware only to admin routes
 export const config = {
-  matcher: ['/dashboard', '/dashboard/:path'], // Protect all routes under /admin
+  matcher: ['/dashboard', '/dashboard/:path', '/event', '/event/:path'], // Protect all routes under /admin
 }

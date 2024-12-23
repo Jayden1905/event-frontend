@@ -44,9 +44,9 @@ const importFormSchema = z.object({
 type ImportFormValues = z.infer<typeof importFormSchema>
 
 export function AttendeeImportForm({
-  refetchAttendee,
+  refetchAttendees,
 }: {
-  refetchAttendee: () => void
+  refetchAttendees: () => void
 }) {
   const [open, setOpen] = useState(false)
   const pathname = usePathname()
@@ -72,7 +72,7 @@ export function AttendeeImportForm({
       }
 
       toast.success('Attendees have been imported successfully.')
-      refetchAttendee()
+      refetchAttendees()
     })
   }
 

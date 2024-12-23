@@ -18,7 +18,6 @@ export default function AdminLayout({
 
   useEffect(() => {
     const id = pathname.split('/')[2] || null
-    console.log('id', id)
     setCurrentEventID(id)
   }, [pathname])
 
@@ -42,10 +41,6 @@ export default function AdminLayout({
       isActive: false,
     },
   ]
-
-  if (!currentEventID) {
-    return <div>Loading...</div>
-  }
 
   return (
     <SidebarProvider>

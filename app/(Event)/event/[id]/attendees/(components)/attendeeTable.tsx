@@ -41,13 +41,46 @@ import {
 } from '@/components/ui/table'
 import { api_endpoint } from '@/lib/utils'
 import { AttendeeType } from '@/types/attendee'
-import { AttendeeCreateForm } from './attendeeForm'
 import { AttendeeImportForm } from './attendeeImport'
+import { AttendeeCreateForm } from './attendeeForm'
+import { useEffect } from 'react'
+import { toast } from 'sonner'
+import { usePathname } from 'next/navigation'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog'
 
 function handleDeleteAttendee(id: number, eventID: number) {
   fetch(`${api_endpoint}/api/v1/event/${eventID}/attendees/${id}`, {
     method: 'DELETE',
     credentials: 'include',
+  })
+}
+
+function handleDeleteAllAttendees(
+  eventID: number,
+  refetchAttendees: () => void
+) {
+  fetch(`${api_endpoint}/api/v1/event/${eventID}/attendees`, {
+    method: 'DELETE',
+    credentials: 'include',
+  }).then((res) => {
+    if (!res.ok) {
+      return res.json().then((data) => {
+        toast.error(data.error || 'Failed to delete attendees.')
+      })
+    }
+
+    toast.success('Attendees have been deleted successfully.')
+    refetchAttendees()
   })
 }
 
@@ -87,47 +120,51 @@ export const columns: ColumnDef<AttendeeType>[] = [
         </Button>
       )
     },
-    cell: ({ row }) => <div className="lowercase">{row.getValue('email')}</div>,
+    cell: ({ row }) => (
+      <div className="lowercase">{row.getValue('email') || ''}</div>
+    ),
   },
   {
     accessorKey: 'first_name',
     header: 'First Name',
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue('first_name')}</div>
+      <div className="capitalize">{row.getValue('first_name') || ''}</div>
     ),
   },
   {
     accessorKey: 'last_name',
     header: 'Last Name',
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue('last_name')}</div>
+      <div className="capitalize">{row.getValue('last_name') || ''}</div>
     ),
   },
   {
     accessorKey: 'company_name',
     header: 'Company Name',
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue('company_name')}</div>
+      <div className="capitalize">{row.getValue('company_name') || ''}</div>
     ),
   },
   {
     accessorKey: 'title',
     header: 'Title',
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue('title')}</div>
+      <div className="capitalize">{row.getValue('title') || ''}</div>
     ),
   },
   {
     accessorKey: 'table_no',
     header: 'Table No.',
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue('table_no')}</div>
+      <div className="capitalize">{row.getValue('table_no') || 0}</div>
     ),
   },
   {
     accessorKey: 'role',
     header: 'Role',
-    cell: ({ row }) => <div className="capitalize">{row.getValue('role')}</div>,
+    cell: ({ row }) => (
+      <div className="capitalize">{row.getValue('role') || ''}</div>
+    ),
   },
   {
     id: 'actions',
@@ -172,10 +209,10 @@ export const columns: ColumnDef<AttendeeType>[] = [
 
 export function AttendeeTable({
   attendees,
-  refetchAttendee,
+  refetchAttendees,
 }: {
   attendees: AttendeeType[] | undefined
-  refetchAttendee: () => void
+  refetchAttendees: () => void
 }) {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -184,8 +221,11 @@ export function AttendeeTable({
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = React.useState({})
+  const [data, setData] = React.useState<AttendeeType[]>(attendees ?? [])
 
-  const data = attendees ?? []
+  useEffect(() => {
+    setData(attendees ?? [])
+  }, [attendees])
 
   const table = useReactTable({
     data,
@@ -206,6 +246,9 @@ export function AttendeeTable({
     },
   })
 
+  const pathname = usePathname()
+  const currentEventID = Number(pathname.split('/')[2])
+
   return (
     <div className="w-full">
       <div className="flex items-center justify-between py-4">
@@ -218,8 +261,8 @@ export function AttendeeTable({
           className="max-w-sm"
         />
         <div className="flex items-center space-x-4">
-          <AttendeeImportForm refetchAttendee={refetchAttendee} />
-          <AttendeeCreateForm refetchAttendee={refetchAttendee} />
+          <AttendeeImportForm refetchAttendees={refetchAttendees} />
+          <AttendeeCreateForm refetchAttendees={refetchAttendees} />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline">
@@ -246,6 +289,30 @@ export function AttendeeTable({
                 })}
             </DropdownMenuContent>
           </DropdownMenu>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button variant="destructive">Delete All Attendees</Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. This will permanently delete all
+                  the attendees.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={() =>
+                    handleDeleteAllAttendees(currentEventID, refetchAttendees)
+                  }
+                >
+                  Continue
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
       </div>
       <div className="rounded-md border">
