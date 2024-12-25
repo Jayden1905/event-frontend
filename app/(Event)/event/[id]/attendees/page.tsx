@@ -8,7 +8,7 @@ import { AttendeeTable } from './(components)/attendeeTable'
 
 const fetchAttendees = async (eventID: string) => {
   const response = await fetch(
-    `${api_endpoint}/api/v1/event/${eventID}/all_attendees`,
+    `${api_endpoint}/api/v1/event/${eventID}/attendees/all`,
     {
       method: 'GET',
       credentials: 'include',
@@ -30,7 +30,6 @@ export default function AttendeePage() {
     queryKey: ['attendees'],
     queryFn: () => fetchAttendees(currentEventID),
   })
-  console.log(data)
 
   return (
     <div>

@@ -261,8 +261,10 @@ export function AttendeeTable({
           className="max-w-sm"
         />
         <div className="flex items-center space-x-4">
-          <AttendeeImportForm refetchAttendees={refetchAttendees} />
-          <AttendeeCreateForm refetchAttendees={refetchAttendees} />
+          <div className="hidden items-center space-x-4 lg:flex">
+            <AttendeeImportForm refetchAttendees={refetchAttendees} />
+            <AttendeeCreateForm refetchAttendees={refetchAttendees} />
+          </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline">
@@ -289,33 +291,9 @@ export function AttendeeTable({
                 })}
             </DropdownMenuContent>
           </DropdownMenu>
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button variant="destructive">Delete All Attendees</Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  This action cannot be undone. This will permanently delete all
-                  the attendees.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction
-                  onClick={() =>
-                    handleDeleteAllAttendees(currentEventID, refetchAttendees)
-                  }
-                >
-                  Continue
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
         </div>
       </div>
-      <div className="rounded-md border">
+      <div className="rounded-lg border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -388,6 +366,36 @@ export function AttendeeTable({
             Next
           </Button>
         </div>
+      </div>
+      <div className="flex flex-wrap items-center justify-start gap-4">
+        <div className="flex flex-wrap items-center gap-4 lg:hidden">
+          <AttendeeImportForm refetchAttendees={refetchAttendees} />
+          <AttendeeCreateForm refetchAttendees={refetchAttendees} />
+        </div>
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button variant="destructive">Delete All Attendees</Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+              <AlertDialogDescription>
+                This action cannot be undone. This will permanently delete all
+                the attendees.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction
+                onClick={() =>
+                  handleDeleteAllAttendees(currentEventID, refetchAttendees)
+                }
+              >
+                Continue
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
     </div>
   )

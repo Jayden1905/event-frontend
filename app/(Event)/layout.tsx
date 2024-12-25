@@ -1,7 +1,7 @@
 'use client'
 
 import { SidebarProvider } from '@/components/ui/sidebar'
-import { BarChart2, Settings, Users } from 'lucide-react'
+import { BarChart2, Home, Mail, Settings, Users } from 'lucide-react'
 import BreadCrumb from '../(Admin)/(components)/Dashboard/BreadCrumb'
 import DashboardHeader from '../(Admin)/(components)/Dashboard/DashboardHeader'
 import DashboardSidebar from '../(Admin)/(components)/Dashboard/DashboardSideBar'
@@ -23,6 +23,12 @@ export default function AdminLayout({
 
   const menuItems = [
     {
+      icon: <Home className="h-5 w-5" />,
+      label: 'Back To Home',
+      href: `/dashboard/events`,
+      isActive: false,
+    },
+    {
       icon: <BarChart2 className="h-5 w-5" />,
       label: 'Overview',
       href: `/event/${currentEventID}`,
@@ -32,6 +38,12 @@ export default function AdminLayout({
       icon: <Users className="h-5 w-5" />,
       label: 'Attendees',
       href: `/event/${currentEventID}/attendees`,
+      isActive: false,
+    },
+    {
+      icon: <Mail className="h-5 w-5" />,
+      label: 'Email',
+      href: `/event/${currentEventID}/email`,
       isActive: false,
     },
     {
