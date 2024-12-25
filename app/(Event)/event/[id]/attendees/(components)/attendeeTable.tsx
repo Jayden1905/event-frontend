@@ -19,6 +19,17 @@ import {
 } from '@tanstack/react-table'
 import * as React from 'react'
 
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import {
@@ -41,46 +52,25 @@ import {
 } from '@/components/ui/table'
 import { api_endpoint } from '@/lib/utils'
 import { AttendeeType } from '@/types/attendee'
-import { AttendeeImportForm } from './attendeeImport'
-import { AttendeeCreateForm } from './attendeeForm'
+import { Loader2 } from 'lucide-react'
+import { usePathname } from 'next/navigation'
 import { useEffect } from 'react'
 import { toast } from 'sonner'
-import { usePathname } from 'next/navigation'
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from '@/components/ui/alert-dialog'
+import { AttendeeCreateForm } from './attendeeForm'
+import { AttendeeImportForm } from './attendeeImport'
 
 function handleDeleteAttendee(id: number, eventID: number) {
   fetch(`${api_endpoint}/api/v1/event/${eventID}/attendees/${id}`, {
     method: 'DELETE',
     credentials: 'include',
-  })
-}
-
-function handleDeleteAllAttendees(
-  eventID: number,
-  refetchAttendees: () => void
-) {
-  fetch(`${api_endpoint}/api/v1/event/${eventID}/attendees`, {
-    method: 'DELETE',
-    credentials: 'include',
   }).then((res) => {
     if (!res.ok) {
       return res.json().then((data) => {
-        toast.error(data.error || 'Failed to delete attendees.')
+        toast.error(data.error || 'Failed to delete attendee.')
       })
     }
 
-    toast.success('Attendees have been deleted successfully.')
-    refetchAttendees()
+    toast.success('Attendee has been deleted successfully.')
   })
 }
 
@@ -195,7 +185,6 @@ export const columns: ColumnDef<AttendeeType>[] = [
               className="cursor-pointer"
               onClick={() => {
                 handleDeleteAttendee(attendee.id, attendee.event_id)
-                window.location.reload()
               }}
             >
               Delete Attendee
@@ -222,6 +211,29 @@ export function AttendeeTable({
     React.useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = React.useState({})
   const [data, setData] = React.useState<AttendeeType[]>(attendees ?? [])
+  const [loading, setLoading] = React.useState(false)
+  const [open, setOpen] = React.useState(false)
+
+  function handleDeleteAllAttendees(eventID: number) {
+    setLoading(true)
+    fetch(`${api_endpoint}/api/v1/event/${eventID}/attendees`, {
+      method: 'DELETE',
+      credentials: 'include',
+    }).then((res) => {
+      if (!res.ok) {
+        return res.json().then((data) => {
+          setLoading(false)
+          setOpen(false)
+          toast.error(data.error || 'Failed to delete attendees.')
+        })
+      }
+
+      setLoading(false)
+      setOpen(false)
+      toast.success('Attendees have been deleted successfully.')
+      refetchAttendees()
+    })
+  }
 
   useEffect(() => {
     setData(attendees ?? [])
@@ -372,9 +384,11 @@ export function AttendeeTable({
           <AttendeeImportForm refetchAttendees={refetchAttendees} />
           <AttendeeCreateForm refetchAttendees={refetchAttendees} />
         </div>
-        <AlertDialog>
+        <AlertDialog open={open}>
           <AlertDialogTrigger asChild>
-            <Button variant="destructive">Delete All Attendees</Button>
+            <Button variant="destructive" onClick={() => setOpen(true)}>
+              Delete All Attendees
+            </Button>
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
@@ -387,11 +401,11 @@ export function AttendeeTable({
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
               <AlertDialogAction
-                onClick={() =>
-                  handleDeleteAllAttendees(currentEventID, refetchAttendees)
-                }
+                onClick={() => handleDeleteAllAttendees(currentEventID)}
+                disabled={loading}
               >
-                Continue
+                {loading && <Loader2 className="animate-spin" />}
+                {loading ? 'Deleting' : 'Delete All'}
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>

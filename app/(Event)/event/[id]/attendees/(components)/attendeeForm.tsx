@@ -26,6 +26,7 @@ import { api_endpoint } from '@/lib/utils'
 import { CreateAttendeeType } from '@/types/attendee'
 import { usePathname } from 'next/navigation'
 import { toast } from 'sonner'
+import { Loader2 } from 'lucide-react'
 
 export const attendeeFormSchema = z.object({
   first_name: z.string().min(2, {
@@ -53,6 +54,7 @@ export function AttendeeCreateForm({
   refetchAttendees: () => void
 }) {
   const [open, setOpen] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const pathname = usePathname()
   const currentEventID = pathname.split('/')[2]
@@ -79,6 +81,7 @@ export function AttendeeCreateForm({
     table_no,
     role,
   }: CreateAttendeeType) {
+    setLoading(true)
     fetch(`${api_endpoint}/api/v1/event/add_attendee`, {
       method: 'POST',
       credentials: 'include',
@@ -107,15 +110,18 @@ export function AttendeeCreateForm({
 
         toast.success('Attendee created.')
         refetchAttendees()
+        setLoading(false)
+        setOpen(false)
       })
       .catch((err) => {
         toast.error(err.message)
+        setLoading(false)
+        setOpen(false)
       })
   }
 
   function onSubmit(data: AttendeeFormValues) {
     handleCreateAttendee(data)
-    setOpen(false)
   }
 
   return (
@@ -239,8 +245,13 @@ export function AttendeeCreateForm({
           </Form>
         </div>
         <DialogFooter className="border-t pt-4">
-          <Button type="submit" onClick={form.handleSubmit(onSubmit)}>
-            Save Attendee
+          <Button
+            type="submit"
+            disabled={loading}
+            onClick={form.handleSubmit(onSubmit)}
+          >
+            {loading && <Loader2 className="animate-spin" />}
+            {loading ? 'Creating...' : 'Create Attendee'}
           </Button>
         </DialogFooter>
       </DialogContent>

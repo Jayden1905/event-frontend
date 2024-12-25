@@ -12,7 +12,15 @@ export function ContentEditor({ onContentChange, body }: ContentEditorProps) {
     onContentChange(e.target.value)
   }
 
+  const qrCodePlaceHolder = '<img src="{{qr_code}}" alt="QR Code" />'
+
   const insertPlaceholder = (placeholder: string) => {
+    if (placeholder === qrCodePlaceHolder) {
+      const newContent = body + `${placeholder}`
+      onContentChange(newContent)
+      return
+    }
+
     const newContent = body + ` {{${placeholder}}}`
     onContentChange(newContent)
   }
@@ -21,7 +29,13 @@ export function ContentEditor({ onContentChange, body }: ContentEditorProps) {
     <div className="space-y-2">
       <h2 className="text-lg font-semibold">Email Content</h2>
       <div className="mb-2 flex space-x-2">
-        <Button onClick={() => insertPlaceholder('qr_code')}>
+        <Button onClick={() => insertPlaceholder('first_name')}>
+          Insert First Name
+        </Button>
+        <Button onClick={() => insertPlaceholder('last_name')}>
+          Insert Last Name
+        </Button>
+        <Button onClick={() => insertPlaceholder(qrCodePlaceHolder)}>
           Insert QR Code
         </Button>
       </div>

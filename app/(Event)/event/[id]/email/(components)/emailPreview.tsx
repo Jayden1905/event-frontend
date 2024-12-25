@@ -13,39 +13,51 @@ export function EmailPreview({
 }: EmailPreviewProps) {
   const emailHtml = `
     <!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Email Preview</title>
-      <style>
-        body {
-          font-family: Arial, sans-serif;
-          line-height: 1.6;
-        }
-        .container {
-          max-width: 600px;
-          height: auto;
-          margin: 0 auto;
-          display: flex;
-          flex-direction: column;
-        }
-        img {
-          max-width: 100%;
-          height: 200px;
-          object-fit: cover;
-          object-position: center;
-        }
-      </style>
-    </head>
-    <body>
-      <div class="container">
-        <img src="${headerImage}" alt="Header" style="width: 100%;" />
-        <div>${content}</div>
-        <img src="${footerImage}" alt="Footer" style="width: 100%;" />
-      </div>
-    </body>
-    </html>
+		<html lang="en">
+			<head>
+				<meta charset="UTF-8">
+				<meta name="viewport" content="width=device-width, initial-scale=1.0">
+				<title>Email Preview</title>
+				<style>
+					body {
+						font-family: Arial, sans-serif;
+						line-height: 1.6;
+						margin: 0;
+						padding: 0;
+					}
+					.container {
+						max-width: 600px;
+						width: 100%;
+						margin: 0 auto;
+					}
+					.img-container img {
+						width: 100%;
+						height: 200px;
+            object-fit: cover;
+            object-position: center;
+					}
+				</style>
+			</head>
+		<body>
+		<table class="container" role="presentation" cellspacing="0" cellpadding="0">
+			<tr>
+				<td class="img-container">
+					<img src="${headerImage}" alt="Header" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div>${content}</div>
+				</td>
+			</tr>
+			<tr>
+				<td class="img-container">
+					<img src="${footerImage}" alt="Footer" />
+				</td>
+			</tr>
+		</table>
+		</body>
+		</html>
   `
 
   return (

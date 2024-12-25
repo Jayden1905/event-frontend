@@ -28,6 +28,7 @@ import { Input } from '@/components/ui/input'
 import { toast } from 'sonner'
 import { api_endpoint } from '@/lib/utils'
 import { usePathname } from 'next/navigation'
+import { Loader2 } from 'lucide-react'
 
 const importFormSchema = z.object({
   file: z
@@ -49,6 +50,7 @@ export function AttendeeImportForm({
   refetchAttendees: () => void
 }) {
   const [open, setOpen] = useState(false)
+  const [loading, setLoading] = useState(false)
   const pathname = usePathname()
   const currentEventID = pathname.split('/')[2]
 
@@ -60,6 +62,8 @@ export function AttendeeImportForm({
     const formData = new FormData()
     formData.append('import', file)
 
+    setLoading(true)
+
     fetch(`${api_endpoint}/api/v1/event/${currentEventID}/attendees/import`, {
       method: 'POST',
       credentials: 'include',
@@ -68,18 +72,20 @@ export function AttendeeImportForm({
       if (!response.ok) {
         return response.json().then((error) => {
           toast.error(error.error)
+          setOpen(false)
+          setLoading(false)
         })
       }
 
       toast.success('Attendees have been imported successfully.')
+      setOpen(false)
+      setLoading(false)
       refetchAttendees()
     })
   }
 
   function onSubmit(data: ImportFormValues) {
     handleImportAttendees(data.file, currentEventID)
-
-    setOpen(false)
   }
 
   return (
@@ -106,6 +112,7 @@ export function AttendeeImportForm({
                     <Input
                       type="file"
                       accept=".csv"
+                      disabled={loading}
                       onChange={(e) => onChange(e.target.files)}
                     />
                   </FormControl>
@@ -117,8 +124,9 @@ export function AttendeeImportForm({
               )}
             />
             <DialogFooter>
-              <Button type="submit" disabled={form.formState.isSubmitting}>
-                {form.formState.isSubmitting ? 'Importing...' : 'Import'}
+              <Button type="submit" disabled={loading}>
+                {loading && <Loader2 className="animate-spin" />}
+                {loading ? 'Importing' : 'Import'}
               </Button>
             </DialogFooter>
           </form>
