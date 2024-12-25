@@ -4,12 +4,14 @@ interface EmailPreviewProps {
   headerImage: string
   content: string
   footerImage: string
+  backgroundColor: string
 }
 
 export function EmailPreview({
   headerImage,
   content,
   footerImage,
+  backgroundColor,
 }: EmailPreviewProps) {
   const emailHtml = `
     <!DOCTYPE html>
@@ -29,10 +31,11 @@ export function EmailPreview({
 						max-width: 600px;
 						width: 100%;
 						margin: 0 auto;
+            background-color: ${backgroundColor};
 					}
 					.img-container img {
 						width: 100%;
-						height: 200px;
+            height: auto;
             object-fit: cover;
             object-position: center;
 					}

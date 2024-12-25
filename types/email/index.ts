@@ -4,4 +4,7 @@ export type EmailTemplateType = {
   header_image: string
   content: string
   footer_image: string
+  subject: string
+  bg_color: string
+  message: string
 }

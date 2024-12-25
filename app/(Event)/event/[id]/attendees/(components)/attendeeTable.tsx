@@ -399,7 +399,13 @@ export function AttendeeTable({
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogCancel
+                onClick={() => {
+                  setOpen(false)
+                }}
+              >
+                Cancel
+              </AlertDialogCancel>
               <AlertDialogAction
                 onClick={() => handleDeleteAllAttendees(currentEventID)}
                 disabled={loading}
