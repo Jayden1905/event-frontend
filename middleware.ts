@@ -37,5 +37,5 @@ export async function middleware(req: NextRequest) {
 
 // Apply middleware only to admin routes and event routes
 export const config = {
-  matcher: ['/dashboard', '/dashboard/:path', '/event', '/event/:path'],
+  matcher: ['/dashboard/:path*', '/event/:path*'],
 }
