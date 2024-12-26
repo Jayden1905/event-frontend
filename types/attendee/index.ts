@@ -1,3 +1,5 @@
+import { Color } from 'three'
+
 export type AttendeeType = {
   id: number
   first_name: string
