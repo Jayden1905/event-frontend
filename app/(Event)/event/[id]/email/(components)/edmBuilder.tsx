@@ -145,9 +145,9 @@ export function EDMBuilder({ data }: { data: EmailTemplateType | undefined }) {
   }, [data])
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto w-full p-4">
       <h1 className="mb-4 text-2xl font-bold">EDM Builder</h1>
-      <div className="space-y-4">
+      <div className="w-full space-y-4">
         <div>
           <h2 className="mb-2 text-lg font-semibold">Subject</h2>
           <Input

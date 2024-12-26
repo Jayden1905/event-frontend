@@ -1,7 +1,16 @@
 'use client'
 
 import { SidebarProvider } from '@/components/ui/sidebar'
-import { BarChart2, Home, Mail, Settings, Users } from 'lucide-react'
+import {
+  BarChart2,
+  ClipboardCheck,
+  FileCheck2,
+  Home,
+  Mail,
+  PrinterCheck,
+  Settings,
+  Users,
+} from 'lucide-react'
 import BreadCrumb from '../(Admin)/(components)/Dashboard/BreadCrumb'
 import DashboardHeader from '../(Admin)/(components)/Dashboard/DashboardHeader'
 import DashboardSidebar from '../(Admin)/(components)/Dashboard/DashboardSideBar'
@@ -47,9 +56,27 @@ export default function AdminLayout({
       isActive: false,
     },
     {
+      icon: <ClipboardCheck className="h-5 w-5" />,
+      label: 'Marking Attendance',
+      submenu: [
+        {
+          icon: <FileCheck2 className="h-5 w-5" />,
+          label: 'Check-in',
+          href: `/event/${currentEventID}/check-in`,
+          isActive: false,
+        },
+        {
+          icon: <PrinterCheck className="h-5 w-5" />,
+          label: 'Check-in & Print',
+          href: `/event/${currentEventID}/check-in-print`,
+          isActive: false,
+        },
+      ],
+    },
+    {
       icon: <Settings className="h-5 w-5" />,
       label: 'Settings',
-      href: '/dashboard/settings',
+      href: `/event/${currentEventID}/settings`,
       isActive: false,
     },
   ]

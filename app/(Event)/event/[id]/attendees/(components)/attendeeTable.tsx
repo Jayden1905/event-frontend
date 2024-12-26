@@ -58,6 +58,7 @@ import { useEffect } from 'react'
 import { toast } from 'sonner'
 import { AttendeeCreateForm } from './attendeeForm'
 import { AttendeeImportForm } from './attendeeImport'
+import Link from 'next/link'
 
 function handleDeleteAttendee(id: number, eventID: number) {
   fetch(`${api_endpoint}/api/v1/event/${eventID}/attendees/${id}`, {
@@ -71,6 +72,21 @@ function handleDeleteAttendee(id: number, eventID: number) {
     }
 
     toast.success('Attendee has been deleted successfully.')
+  })
+}
+
+function handleMarkAttendance(email: string) {
+  fetch(`${api_endpoint}/api/v1/attendees/mark_attendance/${email}`, {
+    method: 'POST',
+    credentials: 'include',
+  }).then((res) => {
+    if (!res.ok) {
+      return res.json().then((data) => {
+        toast.error(data.error)
+      })
+    }
+
+    toast.success('Attendance marked successfully')
   })
 }
 
@@ -179,6 +195,17 @@ export const columns: ColumnDef<AttendeeType>[] = [
               }
             >
               Copy Attendee Email
+            </DropdownMenuItem>
+            <Link href={`/event/${attendee.event_id}/attendees/${attendee.id}`}>
+              <DropdownMenuItem className="cursor-pointer">
+                Edit Attendee
+              </DropdownMenuItem>
+            </Link>
+            <DropdownMenuItem
+              className="cursor-pointer"
+              onClick={() => handleMarkAttendance(attendee.email)}
+            >
+              Mark Attendance
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem
