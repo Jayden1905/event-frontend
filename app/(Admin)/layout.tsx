@@ -2,7 +2,7 @@ import { SidebarProvider } from '@/components/ui/sidebar'
 import type { Metadata } from 'next'
 import DashboardHeader from './(components)/Dashboard/DashboardHeader'
 import DashboardSidebar from './(components)/Dashboard/DashboardSideBar'
-import { BarChart2, Folder, Home, Settings } from 'lucide-react'
+import { Folder, Home, Settings } from 'lucide-react'
 import BreadCrumb from './(components)/Dashboard/BreadCrumb'
 
 export const metadata: Metadata = {
@@ -21,30 +21,6 @@ export default async function AdminLayout({
       label: 'Overview',
       href: '/dashboard',
       isActive: false,
-    },
-    {
-      icon: <BarChart2 className="h-5 w-5" />,
-      label: 'Analytics',
-      submenu: [
-        {
-          icon: <BarChart2 className="h-5 w-5" />,
-          label: 'Overview',
-          href: '/',
-          isActive: false,
-        },
-        {
-          icon: <BarChart2 className="h-5 w-5" />,
-          label: 'Reports',
-          href: '/',
-          isActive: false,
-        },
-        {
-          icon: <BarChart2 className="h-5 w-5" />,
-          label: 'Real-time',
-          href: '/',
-          isActive: false,
-        },
-      ],
     },
     {
       icon: <Folder className="h-5 w-5" />,

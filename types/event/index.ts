@@ -6,8 +6,8 @@ export type EventType = {
   end_date: Date
   location: string
   userID: number
-  createdAt: Date
-  updatedAt: Date
+  created_at: Date
+  updated_at: Date
 }
 
 export type CreateEventType = {
