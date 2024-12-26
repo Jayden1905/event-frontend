@@ -72,10 +72,20 @@ export default function LuckyDrawPage() {
       <h1 className="mb-8 text-4xl font-bold text-white">Lucky Draw</h1>
 
       <div className="relative flex h-[400px] w-[400px] items-center justify-center overflow-hidden border-4 border-gray-300 bg-white shadow-lg">
-        {participants?.map((participant) => {
+        {participants?.map((participant, index) => {
           const initials =
             `${participant.first_name[0]}${participant.last_name[0]}`.toUpperCase()
-          const isWinner = winner?.id === participant.id
+          const colors = [
+            'bg-red-400',
+            'bg-blue-400',
+            'bg-yellow-400',
+            'bg-purple-400',
+            'bg-pink-400',
+            'bg-indigo-400',
+            'bg-teal-500',
+            'bg-green-400',
+          ]
+          const colorClass = colors[index % colors.length]
 
           return (
             <motion.div
@@ -98,11 +108,6 @@ export default function LuckyDrawPage() {
                         Math.random() * 350 - 175,
                       ],
                     }
-                  : isWinner
-                  ? {
-                      scale: 2, // Pop-out winner ball
-                      y: -200, // Move out of the machine
-                    }
                   : {
                       y: 180, // Simulate gravity
                     }
@@ -113,13 +118,20 @@ export default function LuckyDrawPage() {
                 repeat: airBlowing ? Infinity : 0,
                 repeatType: 'reverse',
               }}
-              className={`absolute flex items-center justify-center rounded-full bg-blue-400 text-sm font-bold text-white shadow-md ${
-                isWinner ? 'bg-green-500' : ''
-              }`}
+              className={`absolute ${colorClass} flex items-center justify-center rounded-full text-sm font-bold text-white shadow-md`}
               style={{
                 width: '25px', // Slightly larger size for visibility
                 height: '25px',
               }}
+              drag
+              dragConstraints={{
+                left: -175,
+                right: 175,
+                top: -175,
+                bottom: 175,
+              }}
+              dragElastic={0.5}
+              whileTap={{ scale: 1.2 }}
             >
               {initials}
             </motion.div>
@@ -136,15 +148,17 @@ export default function LuckyDrawPage() {
         {isDrawing ? 'Drawing...' : 'Start Lottery'}
       </button>
 
-      {winner && (
-        <div className="mt-8 rounded-lg bg-white p-4 text-center shadow-md">
-          <h2 className="text-2xl font-bold text-green-500">🎉 Winner 🎉</h2>
-          <p className="text-gray-800">
-            {winner.first_name} {winner.last_name}
-          </p>
-          <p className="text-gray-600">{winner.email}</p>
-        </div>
-      )}
+      <div className="mt-8 flex h-[150px] w-[250px] flex-col items-center justify-center gap-2 rounded-lg bg-white p-4 text-center shadow-md">
+        {winner && (
+          <>
+            <h2 className="text-2xl font-bold text-green-500">🎉 Winner 🎉</h2>
+            <p className="text-gray-800">
+              {winner.first_name} {winner.last_name}
+            </p>
+            <p className="text-gray-600">{winner.email}</p>
+          </>
+        )}
+      </div>
 
       <Link href={`/event/${currentEventID}`}>
         <Button
