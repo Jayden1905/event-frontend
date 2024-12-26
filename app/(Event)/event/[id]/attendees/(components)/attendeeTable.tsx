@@ -90,6 +90,21 @@ function handleMarkAttendance(email: string) {
   })
 }
 
+const handleSendEmail = (attendeeID: number) => {
+  fetch(`${api_endpoint}/api/v1/attendees/send_invitation/${attendeeID}`, {
+    method: 'POST',
+    credentials: 'include',
+  }).then((res) => {
+    if (!res.ok) {
+      return res.json().then((error) => {
+        toast.error(error.error)
+      })
+    }
+
+    toast.success('Emails sent successfully')
+  })
+}
+
 export const columns: ColumnDef<AttendeeType>[] = [
   {
     id: 'select',
@@ -208,6 +223,12 @@ export const columns: ColumnDef<AttendeeType>[] = [
               Mark Attendance
             </DropdownMenuItem>
             <DropdownMenuSeparator />
+            <DropdownMenuItem
+              className="cursor-pointer"
+              onClick={() => handleSendEmail(attendee.id)}
+            >
+              Send Email
+            </DropdownMenuItem>
             <DropdownMenuItem
               className="cursor-pointer"
               onClick={() => {

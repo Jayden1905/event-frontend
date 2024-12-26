@@ -1,6 +1,7 @@
 import useAuthServer from '@/hooks/useAuthServer'
 import { api_endpoint } from '@/lib/utils'
 import { EventType } from '@/types/event'
+import EventEditForm from './(components)/eventEditForm'
 
 export default async function EventSettingPage({
   params,
@@ -22,7 +23,7 @@ export default async function EventSettingPage({
   return (
     <div>
       <h1 className="mb-2 text-3xl font-bold">{event.title} Settings Page</h1>
-      <p className="text-muted-foreground mb-4"></p>
+      <EventEditForm data={event} />
     </div>
   )
 }
