@@ -11,9 +11,9 @@ import {
   Pie,
   PieChart,
   ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  Tooltip,
 } from 'recharts'
 
 const fetchEvents = async () => {
