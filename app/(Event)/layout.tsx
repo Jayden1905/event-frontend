@@ -4,6 +4,7 @@ import { SidebarProvider } from '@/components/ui/sidebar'
 import {
   BarChart2,
   ClipboardCheck,
+  Dices,
   FileCheck2,
   Home,
   Mail,
@@ -72,6 +73,12 @@ export default function AdminLayout({
           isActive: false,
         },
       ],
+    },
+    {
+      icon: <Dices className="h-5 w-5" />,
+      label: 'Lucky Draw',
+      href: `/event/${currentEventID}/lucky-draw`,
+      isActive: false,
     },
     {
       icon: <Settings className="h-5 w-5" />,
