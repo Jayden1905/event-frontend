@@ -1,14 +1,15 @@
 'use client'
 
-import { useState } from 'react'
-import { motion } from 'framer-motion'
-import { AttendeeType } from '@/types/attendee'
-import { api_endpoint } from '@/lib/utils'
-import { useQuery } from '@tanstack/react-query'
-import { usePathname } from 'next/navigation'
-import { Button } from '@/components/ui/button'
-import Link from 'next/link'
 import LoadingComponent from '@/components/loading'
+import { Button } from '@/components/ui/button'
+import { api_endpoint } from '@/lib/utils'
+import { AttendeeType } from '@/types/attendee'
+import { useQuery } from '@tanstack/react-query'
+import { motion } from 'framer-motion'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { useState } from 'react'
+import { Confetti } from './(components)/confetti'
 
 const fetchAttendees = async (eventID: string) => {
   const response = await fetch(
@@ -145,12 +146,13 @@ export default function LuckyDrawPage() {
         className="mt-8 rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white shadow-md hover:bg-blue-700 disabled:opacity-50"
         disabled={isDrawing}
       >
-        {isDrawing ? 'Drawing...' : 'Start Lottery'}
+        {isDrawing ? 'Drawing...' : 'Start Drawing'}
       </button>
 
       <div className="mt-8 flex h-[150px] w-[250px] flex-col items-center justify-center gap-2 rounded-lg bg-white p-4 text-center shadow-md">
         {winner && (
           <>
+            <Confetti />
             <h2 className="text-2xl font-bold text-green-500">🎉 Winner 🎉</h2>
             <p className="text-gray-800">
               {winner.first_name} {winner.last_name}

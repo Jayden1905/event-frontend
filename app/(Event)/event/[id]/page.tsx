@@ -1,13 +1,13 @@
-import useAuthServer from '@/hooks/useAuthServer'
-import { api_endpoint } from '@/lib/utils'
-import { EventType } from '@/types/event'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { CalendarDays, MapPin, Users, UserCheck } from 'lucide-react'
-import EventDetails from './(components)/eventDetails'
-import AttendeeList from './(components)/attendeeList'
-import AttendanceChart from './(components)/attendanceChart'
+import useAuthServer from '@/hooks/useAuthServer'
+import { api_endpoint } from '@/lib/utils'
 import { AttendeeType } from '@/types/attendee'
+import { EventType } from '@/types/event'
+import { CalendarDays, MapPin, UserCheck, Users } from 'lucide-react'
+import AttendanceChart from './(components)/attendanceChart'
+import AttendeeList from './(components)/attendeeList'
+import EventDetails from './(components)/eventDetails'
 
 export default async function EventDetailPage({
   params,
