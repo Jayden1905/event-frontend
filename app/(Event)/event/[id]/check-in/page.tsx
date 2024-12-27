@@ -4,7 +4,7 @@ import { QRCodeScanner } from './(components)/qrReader'
 
 export default function CheckInPage() {
   const [scannedResult, setScannedResult] = useState<string | null>(null)
-  const [error, setError] = useState<string | null>(null)
+  const [error, setError] = useState<boolean>(true)
 
   const handleQRCodeResult = (result: string) => {
     setScannedResult(result)
