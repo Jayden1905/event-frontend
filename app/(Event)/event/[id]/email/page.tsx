@@ -1,7 +1,7 @@
 import useAuthServer from '@/hooks/useAuthServer'
 import { api_endpoint } from '@/lib/utils'
 import { EmailTemplateType } from '@/types/email'
-import { EDMBuilder } from './(components)/edmBuilder'
+import EDMBuilder from './(components)/edmBuilder'
 
 async function GetEmailTemplate(token: string, eventID: string) {
   const response = await fetch(
@@ -12,7 +12,7 @@ async function GetEmailTemplate(token: string, eventID: string) {
       headers: {
         Authorization: `${token}`,
       },
-    }
+    },
   )
 
   if (!response.ok) {
