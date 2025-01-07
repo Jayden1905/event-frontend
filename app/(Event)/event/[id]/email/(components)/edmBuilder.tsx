@@ -19,10 +19,10 @@ import { Loader2 } from 'lucide-react'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
-import { ContentEditor } from './contentEditor'
 import { EmailPreview } from './emailPreview'
 import { FooterImage } from './footerImage'
 import { HeaderImage } from './headerImage'
+import { ContentEditor } from './contentEditor'
 
 export function EDMBuilder({ data }: { data: EmailTemplateType | undefined }) {
   const [headerImage, setHeaderImage] = useState('')
@@ -145,7 +145,7 @@ export function EDMBuilder({ data }: { data: EmailTemplateType | undefined }) {
   }, [data])
 
   return (
-    <div className="container mx-auto w-full p-4">
+    <div className="mx-auto w-full p-4">
       <h1 className="mb-4 text-2xl font-bold">EDM Builder</h1>
       <div className="w-full space-y-4">
         <div>

@@ -28,6 +28,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import * as z from 'zod'
+import { useRouter } from 'next/navigation'
 
 const formSchema = z.object({
   title: z.string().min(2, {
@@ -49,6 +50,8 @@ const formSchema = z.object({
 
 export default function EventForm() {
   const [loading, setLoading] = useState(false)
+  const router = useRouter()
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -88,6 +91,7 @@ export default function EventForm() {
       }
       setLoading(false)
       toast.success('Event created successfully.')
+      router.push('/dashboard/events')
     })
   }
 

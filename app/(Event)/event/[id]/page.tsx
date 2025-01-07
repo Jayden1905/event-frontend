@@ -36,9 +36,13 @@ export default async function EventDetailPage({
     }
   )
 
-  const attendees: AttendeeType[] = await attendeesRes.json()
+  let attendees: AttendeeType[] = await attendeesRes.json()
 
-  const totalAttendees = attendees.length
+  if (attendees == null) {
+    attendees = []
+  }
+
+  const totalAttendees = attendees.length || 0
   const presentAttendees = attendees.filter((a) => a.attendance).length
 
   return (
