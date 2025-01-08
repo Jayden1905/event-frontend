@@ -1,7 +1,6 @@
 'use client'
 
-import { useForm } from 'react-hook-form'
-import z from 'zod'
+import { Button } from '@/components/ui/button'
 import {
   Form,
   FormControl,
@@ -11,11 +10,11 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { zodResolver } from '@hookform/resolvers/zod'
-import TiptapEditor from './tiptapEditor'
 import { Textarea } from '@/components/ui/textarea'
-import { Button } from '@/components/ui/button'
-import ImageGallery from './imageGallery'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import z from 'zod'
+import TiptapEditor from './tiptapEditor'
 
 const formSchema = z.object({
   subject: z.string().nonempty({ message: 'Subject is required' }),
@@ -100,12 +99,7 @@ export default function EdmBuilder() {
           />
         </form>
       </Form>
-      <ImageGallery />
-      <Button
-        className='w-full mt-4'
-        type='submit'
-        onClick={form.handleSubmit(onSubmit)}
-      >
+      <Button className='w-full mt-4' onClick={form.handleSubmit(onSubmit)}>
         Submit
       </Button>
     </div>

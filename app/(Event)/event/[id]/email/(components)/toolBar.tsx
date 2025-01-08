@@ -12,23 +12,43 @@ import {
   HeadingIcon,
   Heading3,
   Underline,
-  CodeXml,
   AlignLeft,
   AlignRight,
   AlignCenter,
+  ImageIcon,
+  Link,
 } from 'lucide-react'
 import { Toggle } from '@/components/ui/toggle'
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu'
+import { useAtom } from 'jotai'
+import { visibleAtom } from '@/lib/store'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
+import { Label } from '@/components/ui/label'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+import { useState } from 'react'
 
 type Props = {
   editor: Editor | null
 }
 
 export function ToolBar({ editor }: Props) {
+  const [, setVisible] = useAtom(visibleAtom)
+  const [open, setOpen] = useState<boolean>(false)
+  const [url, setUrl] = useState<string>('')
+
   if (!editor) return null
 
   return (
@@ -105,6 +125,48 @@ export function ToolBar({ editor }: Props) {
       >
         <Strikethrough className='h-5 w-5' />
       </Toggle>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogTrigger asChild>
+          <Link className='w-4 h-4' />
+        </DialogTrigger>
+        <DialogContent className='sm:max-w-[425px]'>
+          <DialogHeader>
+            <DialogTitle>Insert Link</DialogTitle>
+            <DialogDescription>
+              This is the form for inserting the link.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className='grid gap-4 py-4'>
+            <div className='grid grid-cols-4 items-center gap-4'>
+              <Label htmlFor='url' className='text-right'>
+                Url
+              </Label>
+              <Input
+                id='url'
+                className='col-span-3'
+                onChange={(event) => {
+                  setUrl(event.target.value)
+                }}
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button
+              onClick={() => {
+                editor
+                  .chain()
+                  .focus()
+                  .setLink({ href: url, target: '_blank' })
+                  .run()
+                setOpen(false)
+              }}
+            >
+              Ok
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
       <Toggle
         size={'lg'}
         pressed={editor.isActive('bulletList')}
@@ -149,6 +211,15 @@ export function ToolBar({ editor }: Props) {
         }}
       >
         <AlignRight className='h-5 w-5' />
+      </Toggle>
+      <Toggle
+        size={'lg'}
+        pressed={editor.isActive('orderedList')}
+        onPressedChange={() => {
+          setVisible(true)
+        }}
+      >
+        <ImageIcon className='h-5 w-5' />
       </Toggle>
     </div>
   )
